@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  ######################
+  ## PostgreSQL
+  ######################
+  caching-demo-psql:
+    image: postgres
+    container_name: caching-demo-psql
+    environment:
+      POSTGRES_DB: caching-demo-psql
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+
+  ######################
+  ## DotNetCore App
+  ######################
+  caching-demo-api:
+    build: ./Caching.Demo.Api
+    container_name: caching-demo-api
+    command: bash -c "dotnet ef database update && dotnet run"
+    depends_on:
+      - caching-demo-psql
+    ports:
+      - "5001:5001"
+      - "5000:5000"
