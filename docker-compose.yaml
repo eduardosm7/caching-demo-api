@@ -21,9 +21,8 @@ services:
   caching-demo-api:
     build: ./Caching.Demo.Api
     container_name: caching-demo-api
-    command: bash -c "dotnet ef database update && dotnet run"
+    command: bash -c "dotnet ef database update && dotnet run --urls http://0.0.0.0:5000"
     depends_on:
       - caching-demo-psql
     ports:
-      - "5001:5001"
       - "5000:5000"
