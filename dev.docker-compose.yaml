@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+
+  ######################
+  ## Database using PostgreSQL
+  ######################
+  caching-demo-db:
+    image: postgres
+    env_file:
+      - ".env"
+    container_name: "${DB_HOST}"
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    expose:
+      - "5432"
+
+  ######################
+  ## Cache using Redis
+  ######################
+  caching-demo-cache:
+    image: redis
+    container_name: caching-demo-cache
+    expose:
+      - "6379"
+
+  ######################
+  ## DotNetCore App
+  ######################
+  caching-demo-api:
+    build:
+      context: ./Caching.Demo.Api
+      dockerfile: dev.Dockerfile
+    container_name: caching-demo-api
+    env_file:
+      - ".env"
+    command: bash -c "export PATH='$PATH:/root/.dotnet/tools' && dotnet ef database update && dotnet watch run --urls http://0.0.0.0:5000"
+    depends_on:
+      - caching-demo-db
+      - caching-demo-cache
+    volumes:
+      - "./Caching.Demo.Api:/app"
+    ports:
+      - "5000:5000"
