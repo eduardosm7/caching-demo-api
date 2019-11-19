@@ -22,7 +22,9 @@ services:
   ######################
   caching-demo-cache:
     image: redis
-    container_name: caching-demo-cache
+    env_file:
+      - ".env"
+    container_name: "${CACHE_HOST}"
     expose:
       - "6379"
 

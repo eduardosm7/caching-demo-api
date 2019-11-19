@@ -1,3 +1,4 @@
+using System;
 using Caching.Demo.Api.Data;
 using Caching.Demo.Api.Repositories;
 using Caching.Demo.Api.Services;
@@ -21,6 +22,11 @@ namespace Caching.Demo.Api
             services.AddScoped<StoreDataContext, StoreDataContext>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Environment.GetEnvironmentVariable("CACHE_HOST");
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
