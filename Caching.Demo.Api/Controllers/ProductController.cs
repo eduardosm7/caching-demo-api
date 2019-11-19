@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Caching.Demo.Api.Controllers
 {
-    [Route("")]
+    [Route("product")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -15,14 +15,18 @@ namespace Caching.Demo.Api.Controllers
             _productService = productService;
         }
 
-        [Route("product")]
         [HttpGet]
         public IEnumerable<Product> Get()
         {
             return _productService.Get();
         }
 
-        [Route("product")]
+        [HttpGet("{id}")]
+        public Product GetById(int id)
+        {
+            return _productService.GetById(id);
+        }
+
         [HttpPost]
         public Product Store([FromBody]Product product)
         {

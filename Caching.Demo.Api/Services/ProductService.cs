@@ -6,24 +6,29 @@ namespace Caching.Demo.Api.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepositoty;
+        private readonly IProductRepository _productRepository;
 
         public ProductService
         (
             IProductRepository productRepository
         )
         {
-            _productRepositoty = productRepository;
+            _productRepository = productRepository;
         }
 
         public IEnumerable<Product> Get()
         {
-            return _productRepositoty.Get();
+            return _productRepository.Get();
+        }
+
+        public Product GetById(int id)
+        {
+            return _productRepository.GetById(id);
         }
 
         public Product Store(Product product)
         {
-            return _productRepositoty.Store(product);
+            return _productRepository.Store(product);
         }
 
     }

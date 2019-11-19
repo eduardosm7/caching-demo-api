@@ -17,9 +17,15 @@ namespace Caching.Demo.Api.Repositories
         {
             _context = context;
         }
+
         public IEnumerable<Product> Get()
         {
             return _context.Products;
+        }
+
+        public Product GetById(int id)
+        {
+            return _context.Products.Find(id);
         }
 
         public Product Store(Product product)
